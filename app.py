@@ -9,5 +9,9 @@ def hello():
 def new():
     return "This page is brand new!!!!!"
 
+@app.route("/good")
+def good():
+    return "This is fucking good"
+
 if __name__ == "__main__":
     app.run()
