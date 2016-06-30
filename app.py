@@ -17,7 +17,7 @@ def good():
 def see():
     return "Let's see if this works..."
 
-@app.route("check")
+@app.route("/check")
 def check():
     return "It works! It works!!"
 
