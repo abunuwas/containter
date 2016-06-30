@@ -13,5 +13,9 @@ def new():
 def good():
     return "This is fucking good"
 
+@app.route("/see")
+def see():
+    return "Let's see if this works..."
+
 if __name__ == "__main__":
     app.run()
