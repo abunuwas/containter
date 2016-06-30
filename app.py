@@ -5,7 +5,7 @@ app = Flask(__name__)
 def hello():
     return "Hellow world! This is a new version :D :D :D :D"
 
-@app.rout("/new")
+@app.route("/new")
 def new():
     return "This page is brand new!!!!!"
 
