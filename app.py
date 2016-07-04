@@ -1,9 +1,14 @@
 from flask import Flask
-app = Flask(__name__)
+from redis import Redis
+
+app = Flask(__name__)]
+redis = Redis(host="redis")
 
 @app.route("/")
 def hello():
-    return "Hellow world! This is a new version :D :D :D :D <h1>This is definitely working!!!!!</h1>"
+    visits = redis.incr('counter')
+    html = "Hellow world! This is a new version :D :D :D :D <h1>This is definitely working!!!!!</h1><h2>Visits: {visits}"
+    return html.format(visits=visits)
 
 @app.route("/new")
 def new():
@@ -22,4 +27,4 @@ def check():
     return "It works! It works!!"
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host="0.0.0.0", port=8080)
