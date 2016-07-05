@@ -4,54 +4,68 @@
 ########################################################
 
 # Set the base image to Ubuntu
-FROM ubuntu
+FROM ubuntu:xenial
 
 # File Author / Maintainer
 MAINTAINER Jose Haro
 
 # Add the applicaiton resources URL
-RUN distrib=$(cat /etc/lsb-release | grep DISTRIB_CODENAME)
-RUN version=${distrib#*=}
-RUN echo "deb http://archive.ubuntu.com/ubuntu/ $(lsb_release -sc) main universe" >> /etc/apt/sources.list
+#RUN distrib=$(cat /etc/lsb-release | grep DISTRIB_CODENAME);
+#RUN echo $distrib;
+#RUN version=${distrib#*=};
+#RUN echo "deb http://archive.ubuntu.com/ubuntu/ $(cat /etc/lsb-release | grep DISTRIB_CODENAME | sed -e 's/.*=//') main universe" >> /etc/apt/sources.list
 
 # Update the sources list
 RUN apt-get update
 
 # Install basic applications
-RUN apt-get install -y tar git curl nano wget dialog net-tools build-essential
+RUN apt-get install -y tar git curl nano wget dialog net-tools build-essential unzip
 
 # Install Python and Basic Python Tools
-RUN apt-get install -y python3 python3-dev python-distribute python3-pip
+RUN apt-get install -y python3 python3-dev python-distribute python3-pip virtualenv
 
 # Create app directory
-RUN mkdir /home/py_app
+#RUN mkdir /home/py_app
 
 # Go into the app directory
-RUN cd /home/py_app
+#RUN cd /home/py_app
 
 # Clone git repository
-RUN git clone https://github.com/abunuwas/containter.git
+ADD https://github.com/abunuwas/containter/archive/master.zip /home/
+RUN #!/bin/bash if [ -d /containter-master ]; then rm -rf /containter-master; fi
+
+RUN #!/bin/bash mkdir -p ~/.ssh
+
+RUN unzip /home/master.zip -d /
+ADD id_rsa /containter-master/
+
+RUN #!/bin/bash cp id_rsa ~/.ssh
+RUN git clone ssh://git@scm.intamac.com:22/xmpp/common.git
+
+RUN rm -rf /home/master.zip
+#RUN cd containter-master && git pull origin master
 
 # Get into the application's folder
-RUN cd containter
+#RUN cd containter
 
 # Create virtual environment
-RUN virtualenv venv --python=python3
+#RUN virtualenv containter/venv --python=python3
 
 # Activate virtual environment
-RUN source venv/bin/activate
+#RUN containter/venv/bin/activate
 
 # Install Python dependencies
-RUN pip install -r requirements.txt
+RUN pip3 install -r containter-master/requirements.txt
 
 # Expose ports
 EXPOSE 8080
+EXPOSE 80
 
 # Set the default directory where CMD will execute
-WORKDIR /home/py_app/containter
+WORKDIR /containter-master
 
 # Set the default command to execute
 # when creating a new container
-CMD python server.py
+CMD python3 server.py
 
 
