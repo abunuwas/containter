@@ -31,18 +31,15 @@ RUN apt-get install -y python3 python3-dev python-distribute python3-pip virtual
 #RUN cd /home/py_app
 
 # Clone git repository
-ADD https://github.com/abunuwas/containter/archive/master.zip /home/
+#ADD https://github.com/abunuwas/containter/archive/master.zip /home/
 RUN #!/bin/bash if [ -d /containter-master ]; then rm -rf /containter-master; fi
 
-RUN #!/bin/bash mkdir -p ~/.ssh
+#RUN unzip /home/master.zip -d /
+#ADD id_rsa /containter-master/
 
-RUN unzip /home/master.zip -d /
-ADD id_rsa /containter-master/
+ADD application/* containter-master/
 
-RUN #!/bin/bash cp id_rsa ~/.ssh
-RUN git clone ssh://git@scm.intamac.com:22/xmpp/common.git
-
-RUN rm -rf /home/master.zip
+#RUN rm -rf /home/master.zip
 #RUN cd containter-master && git pull origin master
 
 # Get into the application's folder
@@ -62,7 +59,7 @@ EXPOSE 8080
 EXPOSE 80
 
 # Set the default directory where CMD will execute
-WORKDIR /containter-master
+WORKDIR /containter-master/src/
 
 # Set the default command to execute
 # when creating a new container
