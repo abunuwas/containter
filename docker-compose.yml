@@ -1,8 +1,11 @@
+
 web:
     build: .
     dockerfile: Dockerfile
     links:
         - redis
+    volumes:
+        - sshfiles:/root
     ports:
         - "9090:8080"
         - "90:80"
