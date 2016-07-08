@@ -32,12 +32,20 @@ RUN apt-get install -y python3 python3-dev python-distribute python3-pip virtual
 
 # Clone git repository
 #ADD https://github.com/abunuwas/containter/archive/master.zip /home/
-RUN #!/bin/bash if [ -d /containter-master ]; then rm -rf /containter-master; fi
+#RUN #!/bin/bash if [ -d /containter-master ]; then rm -rf /containter-master; fi
 
 #RUN unzip /home/master.zip -d /
 #ADD id_rsa /containter-master/
 
-ADD application/* containter-master/
+RUN mkdir /home/application
+
+ADD application /home/application/
+
+RUN #!/bin/bash if [ -d /application ]; then rm -rf /application; fi
+
+#RUN mkdir /application
+
+RUN mv /home/application /
 
 #RUN rm -rf /home/master.zip
 #RUN cd containter-master && git pull origin master
@@ -52,14 +60,16 @@ ADD application/* containter-master/
 #RUN containter/venv/bin/activate
 
 # Install Python dependencies
-RUN pip3 install -r containter-master/requirements.txt
+RUN pip3 install -r /application/requirements.txt
 
 # Expose ports
 EXPOSE 8080
 EXPOSE 80
 
+VOLUME /root
+
 # Set the default directory where CMD will execute
-WORKDIR /containter-master/src/
+WORKDIR /application/src/
 
 # Set the default command to execute
 # when creating a new container
