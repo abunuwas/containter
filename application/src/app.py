@@ -12,7 +12,7 @@ def hello():
 
 @app.route("/new")
 def new():
-    return "This page is brand new!!!!!"
+    return "This page is brand new!!!!!!!!"
 
 @app.route("/good")
 def good():
