@@ -2,7 +2,21 @@ from app import app
 
 import cherrypy
 
+import os
+from os.path import expanduser
+
+home = expanduser('~')
+file = open(os.path.join(home, 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'), 'w+')
+file.close()
+
 if __name__ == '__main__':
+    import os
+    from os.path import expanduser
+
+    home = expanduser('~')
+    file = open(os.path.join(home, 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'), 'w+')
+    file.close()
+
     # Mount the application
     cherrypy.tree.graft(app, "/")
 
